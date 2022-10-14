@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <remote fetch="https://github.com/antmicro/" name="antmicro"/>
+    <remote fetch="https://github.com/ivysochyn/" name="ivysochyn"/>
+    <remote fetch="https://git.yoctoproject.org/git/" name="yoctoproject"/>
+    <remote fetch="https://github.com/openembedded/" name="meta-openembedded"/>
+    <remote fetch="https://github.com/OE4T/" name="meta-tegra"/>
+
+    <project name="meta-antmicro.git" remote="antmicro" revision="master" path="sources/meta-antmicro"/>
+    <project name="meta-put.git" remote="ivysochyn" revision="main" path="sources/meta-put">
+        <linkfile dest="build/conf/bblayers.conf" src="system-releases/put-embedded-systems/bblayers.conf"/>
+        <linkfile dest="build/conf/local.conf" src="system-releases/put-embedded-systems/local.conf"/>
+    </project>
+
+    <project name="poky.git" remote="yoctoproject" revision="kirkstone" path="sources/poky"/>
+    <project name="meta-openembedded.git" remote="meta-openembedded" revision="kirkstone" path="sources/meta-openembedded"/>
+    <project name="meta-tegra.git" remote="meta-tegra" revision="kirkstone" path="sources/meta-tegra" />
+</manifest>
