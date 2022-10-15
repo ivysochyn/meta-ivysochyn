@@ -12,6 +12,7 @@ PYPI_PACKAGE = "face_recognition"
 
 RDEPENDS:${PN} += " \
     dlib \
+    python3-dlib \
     python3-core \
     python3-numpy \
     python3-pillow \
