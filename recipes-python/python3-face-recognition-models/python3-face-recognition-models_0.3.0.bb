@@ -8,3 +8,7 @@ SRC_URI[md5sum] = "53f60e9165958b2bb8841d66dde3f02d"
 PYPI_PACKAGE = "face_recognition_models"
 
 inherit pypi setuptools3
+
+RDEPENDS:${PN} = " \
+    python3-pkg-resources \
+"
