@@ -24,4 +24,7 @@ FILES:${PN} += " \
 RDEPENDS:${PN} += " \
     python3-core \
     python3-face-recognition \
+    python3-pysqlite3 \
+    python3-opencv \
+    python3-numpy \
 "
