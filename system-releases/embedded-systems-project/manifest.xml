@@ -10,6 +10,7 @@
     <project name="meta-ivysochyn.git" remote="ivysochyn" revision="main" path="sources/meta-ivysochyn">
         <linkfile dest="build/conf/bblayers.conf" src="system-releases/embedded-systems-project/bblayers.conf"/>
         <linkfile dest="build/conf/local.conf" src="system-releases/embedded-systems-project/local.conf"/>
+        <linkfile dest="deploy.sh" src="system-releases/embedded-systems-project/deploy.sh"/>
     </project>
 
     <project name="poky.git" remote="yoctoproject" revision="kirkstone" path="sources/poky"/>
