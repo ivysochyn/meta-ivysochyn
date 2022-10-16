@@ -3,7 +3,7 @@ DESCRIPTION = "An application to detect and recognize faces from predifined list
 HOMEPAGE = "https://github.com/ivysochyn/embdedded-systems-project"
 
 SRC_URI = "git://github.com/ivysochyn/embdedded-systems-project.git;protocol=https;branch=main"
-SRCREV = "216e22f470b1b2ff35c104e1a9ad5e28a618001a"
+SRCREV = "2c706eeb484df805f172144ec78486f2d5ed13d4"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=d5db30463f0b9397b0ecb7f402a88a49"
 
