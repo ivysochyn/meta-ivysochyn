@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=face-recognition-demo
+Exec=bash -c "/home/root/face-recognition-demo/camera.py > /home/root/face-recognition-demo/log.txt"
