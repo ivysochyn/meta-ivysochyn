@@ -6,10 +6,11 @@ FILESEXTRAPATHS:prepend = "${THISDIR}/files:"
 SRC_URI += " \
     git://github.com/davisking/dlib.git;protocol=https;branch=master \
     file://0001-Remove-python-bindings-building.patch \
+    file://0001-Remove-test-building.patch \
 "
-SRCREV = "929c630b381d444bbf5d7aa622e3decc7785ddb2"
+SRCREV = "6097093ab329fcd19aed03a8fe67949f6971a65d"
 
-inherit pkgconfig python3native cmake
+inherit pkgconfig python3native cuda cmake
 
 OECMAKE_SOURCEPATH = "${S}/tools/python"
 DEPENDS += " \
@@ -17,13 +18,31 @@ DEPENDS += " \
     python3-pybind11-native \
     python3-setuptools-native \
     python3-wheel-native \
+    cuda-toolkit \
+    cuda-nvrtc \
+    cudnn \
+    lapack \
+    chrpath-native \
 "
+
+RDEPENDS:${PN} += " \
+    lapack \
+    cuda-nvrtc \
+    cudnn \
+"
+
 S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE += " \
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DBUILD_SHARED_LIBS=TRUE \
+    -DDLIB_USE_CUDA=1 \
+    -DUSE_AVX_INSTRUCTIONS=1 \
+    -DDLIB_USE_LAPACK=1 \
 "
+
+STAGING_LOCALDIR = "${WORKDIR}/recipe-sysroot/usr/local"
+OECMAKE_CXX_FLAGS:append = " -I ${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/include/"
 OECMAKE_GENERATOR = "Unix Makefiles"
 
 FILES:${PN} += " \
@@ -40,6 +59,15 @@ DISTUTILS_INSTALL_ARGS ?= " \
     --skip-build \
 "
 
+export CUDA_CUDA_LIBRARY="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/stubs/libcuda.so" 
+export CUDA_CUDNN_LIBRARY="${STAGING_LIBDIR}/libcudnn.so"
+export CUDA_CUDART_LIBRARY="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/lib/libcudart.so"
+export CUDA_CUBLAS_LIBRARY="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/lib/libcublas.so" 
+export CUDA_NVRTC_LIBRARY="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/lib/libnvrtc.so" 
+export CUDA_CUDA_INCLUDE_DIRS="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/include/" 
+export CUDA_CUDNN_INCLUDE_DIRS="${STAGING_INCDIR}"
+export CUDA_TOOLKIT_ROOT_DIR="${STAGING_LOCALDIR}/cuda-${CUDA_VERSION}/" 
+
 do_install() {
     cd ${S}
     
@@ -50,6 +78,9 @@ do_install() {
     ${STAGING_BINDIR_NATIVE}/${PYTHON_PN}-native/${PYTHON_PN} setup.py install ${DISTUTILS_INSTALL_ARGS} || \
     bbfatal_log "'${PYTHON_PN} setup.py install ${DISTUTILS_INSTALL_ARGS}' execution failed."
 
-    cp ${B}/dlib.cpython*${BUILD_ARCH}*.so ${B}/dlib.cpython-310-${TARGET_ARCH}-${TARGET_OS}-gnu.so
-    cp ${B}/dlib.cpython*${TARGET_ARCH}*.so ${D}${PYTHON_SITEPACKAGES_DIR}/
+    cp ${B}/*dlib*cpython*${BUILD_ARCH}*.so ${B}/_dlib_pybind11.cpython-310-${TARGET_ARCH}-${TARGET_OS}-gnu.so
+    cp ${B}/*dlib*cpython*${TARGET_ARCH}*.so ${D}${PYTHON_SITEPACKAGES_DIR}/
+    cd ${D}${PYTHON_SITEPACKAGES_DIR}
+    find . -type f -name "*.so" -exec chrpath -d "{}" \;
+    cd -
 }
