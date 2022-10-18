@@ -29,6 +29,7 @@ RDEPENDS:${PN} += " \
     lapack \
     cuda-nvrtc \
     cudnn \
+    cuda-toolkit \
 "
 
 S = "${WORKDIR}/git"
@@ -78,7 +79,7 @@ do_install() {
     ${STAGING_BINDIR_NATIVE}/${PYTHON_PN}-native/${PYTHON_PN} setup.py install ${DISTUTILS_INSTALL_ARGS} || \
     bbfatal_log "'${PYTHON_PN} setup.py install ${DISTUTILS_INSTALL_ARGS}' execution failed."
 
-    cp ${B}/*dlib*cpython*${BUILD_ARCH}*.so ${B}/_dlib_pybind11.cpython-310-${TARGET_ARCH}-${TARGET_OS}-gnu.so
+    cp ${B}/*dlib*cpython*${BUILD_ARCH}*.so ${B}/dlib.cpython-310-${TARGET_ARCH}-${TARGET_OS}-gnu.so
     cp ${B}/*dlib*cpython*${TARGET_ARCH}*.so ${D}${PYTHON_SITEPACKAGES_DIR}/
     cd ${D}${PYTHON_SITEPACKAGES_DIR}
     find . -type f -name "*.so" -exec chrpath -d "{}" \;
