@@ -23,6 +23,9 @@ DEPENDS += " \
     cudnn \
     lapack \
     chrpath-native \
+    openblas \
+    libpng \
+    libgfortran \
 "
 
 RDEPENDS:${PN} += " \
@@ -30,6 +33,9 @@ RDEPENDS:${PN} += " \
     cuda-nvrtc \
     cudnn \
     cuda-toolkit \
+    openblas \
+    libpng \
+    libgfortran \
 "
 
 S = "${WORKDIR}/git"
@@ -40,6 +46,7 @@ EXTRA_OECMAKE += " \
     -DDLIB_USE_CUDA=1 \
     -DUSE_AVX_INSTRUCTIONS=1 \
     -DDLIB_USE_LAPACK=1 \
+    -DDLIB_USE_BLAS=1 \
 "
 
 STAGING_LOCALDIR = "${WORKDIR}/recipe-sysroot/usr/local"
